@@ -1,0 +1,15 @@
+# Changes here will be overwritten by Copier
+_commit: v0.5.0
+_src_path: pdm-copier
+author_email: yann@johncloud.fr
+author_name: Yann de Thé
+copyright_date: '2023'
+copyright_license: MIT License
+min_python_version: '3.8'
+project_description: A PEP517 compliant build backend, able to compile C and fortran
+    source files
+project_name: pikendus backend
+python_package_import_name: pikendus_backend
+repository_name: pikendus-backend
+repository_namespace: ydethe
+repository_provider: gitlab.com
