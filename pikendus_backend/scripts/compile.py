@@ -79,8 +79,10 @@ def compile(build_dir: Path, src_dir: Path):
         obj_list.append(str(obj_pth))
 
     obj_list_str = " ".join(obj_list)
-    dll_pth = build_dir / f"_{pyf_pth.stem}.so"
-    cmd = f"{linker} -o {dll_pth} {obj_list_str}  {lflags} "
-    "`python3-config --ldflags` -lgfortran -shared"
+    dll_pth = src_dir / f"_{pyf_pth.stem}.so"
+    cmd = (
+        f"{linker} -o {dll_pth} {obj_list_str}  {lflags} "
+        + "`python3-config --ldflags` -lgfortran -shared"
+    )
     out = subprocess.run(cmd, stdout=subprocess.PIPE, shell=True, check=True)
     logger.info(f"Linked {dll_pth}")
