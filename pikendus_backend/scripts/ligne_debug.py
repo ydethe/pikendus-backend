@@ -4,11 +4,6 @@ import codecs
 from os.path import basename
 from pathlib import Path
 
-import typer
-
-
-app = typer.Typer()
-
 
 class LigneDebugApp(object):
     def __init__(self, src, dst):
@@ -61,12 +56,7 @@ class LigneDebugApp(object):
             self.num_line += 1
 
 
-@app.command()
-def ligne_debug(
-    src: Path = typer.Argument(..., help="Fichier à transformer"),
-    dst: Path = typer.Argument(..., help="Fichier à écrire"),
-    debug: bool = typer.Argument(False, help="Mode debug"),
-):
+def ligne_debug(src: Path, dst: Path, debug: bool):
     """Transformation des [DEBUG]Message en
     [DEBUG]<nl>@<nf> : Message, où <nl> est le numéro de ligne et <nf> le nom du fichier.
     Créé une copie dans le nême dossier que l'original (extension .old)
@@ -75,7 +65,3 @@ def ligne_debug(
     app = LigneDebugApp(src, dst)
 
     app.traite(debug)
-
-
-if __name__ == "__main__":
-    app()

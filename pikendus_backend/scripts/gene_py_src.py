@@ -5,11 +5,6 @@ from pathlib import Path
 from numpy.distutils import fcompiler, ccompiler
 from os.path import relpath, basename
 
-import typer
-
-
-app = typer.Typer()
-
 
 def get_ext(fic: str) -> str:
     ext = fic.split(".")[-1]
@@ -33,18 +28,11 @@ def liste_fic(root, ext):
     return list_fic
 
 
-# nom, version = nom_ver_lib(".")
-# bn = basename(abspath("."))
-
-# nom = bn
-
-
-@app.command()
 def build_ext(
-    nom: str = typer.Argument(..., help="Nom de la librairie générée"),
-    sig_fic: Path = typer.Argument(..., help="Fichier pyf"),
-    src_dir: Path = typer.Argument(..., help="Dossier des sources"),
-    dst_dir: Path = typer.Argument(..., help="Dossier où écrire les wrappers"),
+    nom: str,
+    sig_fic: Path,
+    src_dir: Path,
+    dst_dir: Path,
 ):
     "Génération des wrappers python"
     f2py_path = "f2py --quiet"
@@ -107,7 +95,3 @@ def build_ext(
     if "libSysteme" not in nom:
         F2pyCommand = "rm -rf %s/fortranobject.*" % dst_dir
         os.popen(F2pyCommand).read()
-
-
-if __name__ == "__main__":
-    app()

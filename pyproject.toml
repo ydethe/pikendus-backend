@@ -19,6 +19,9 @@ dependencies = [
 ]
 requires-python = ">3.8"
 
+[project.scripts]
+pikendus_backend = "pikendus_backend.__main__:app"
+
 [project.urls]
 "Bug Tracker" = "https://gitlab.com/ydethe/pikendus-backend/issues"
 Homepage = "https://gitlab.com/ydethe/pikendus-backend"

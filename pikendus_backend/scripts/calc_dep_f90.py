@@ -5,11 +5,6 @@ import sys
 from os.path import basename
 from typing import List
 
-import typer
-
-
-app = typer.Typer()
-
 
 def trouveChaines(line):
     """Voir doc dans libFichiers.atome_ascii"""
@@ -97,14 +92,7 @@ def get_deps_and_mods(filename, finc_list):
     return deps, mods, incs
 
 
-@app.command()
-def calc_dep_f90(
-    dep_dir: Path = typer.Argument(..., help="Dossier des dépendances"),
-    obj_dir: Path = typer.Argument(..., help="Dossier des objets"),
-    inc_dir: Path = typer.Argument(..., help="Dossier des includes"),
-    f: Path = typer.Argument(..., help="Chemin vers un fichier .f"),
-    finc_list: List[Path] = typer.Argument(..., help="Liste des .finc à analyser"),
-):
+def calc_dep_f90(dep_dir: Path, obj_dir: Path, inc_dir: Path, f: Path, finc_list: List[Path]):
     "Résolution des dépendences d'un source f90 en terme de modules"
     nom = basename(f)[:-2]
     deps, mods, incs = get_deps_and_mods(f, finc_list)
@@ -124,7 +112,3 @@ def calc_dep_f90(
         mnom = basename(m)[:-4]
         line_rel = "%s/%s.mod: %s/%s.os" % (obj_dir, mnom, obj_dir, nom)
         print(line_rel)
-
-
-if __name__ == "__main__":
-    app()
