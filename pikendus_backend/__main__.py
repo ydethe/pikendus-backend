@@ -12,7 +12,6 @@ import typer
 from .scripts.ligne_debug import ligne_debug as _ligne_debug
 from .scripts.calc_dep_f90 import calc_dep_f90 as _calc_dep_f90
 from .scripts.gene_py_src import build_ext as _build_ext
-from .scripts.version_module import version_module as _version_module
 from .scripts.compile import compile as _compile
 
 
@@ -70,17 +69,6 @@ def build_ext(
 ):
     "Génération des wrappers python"
     _build_ext(nom, sig_fic, src_dir, dst_dir)
-
-
-@app.command()
-def version_module(
-    path: List[Path] = typer.Argument(..., help="Chemin vers une ou plusieurs librairie")
-):
-    """Lecture de la version d'une librairie en copie locale.
-    Par exemple, version_module ~/Projets/libFichiers retourne libFichiers-5.0 si
-    la lib est en version 5.0 dans le build.conf
-    """
-    _version_module(path)
 
 
 @app.command()
