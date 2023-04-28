@@ -12,6 +12,8 @@ authors = [
 dependencies = [
     "rich>=13.3",
     "setuptools-scm>=7.1",
+    "pdm-backend>=2.0.6",
+    "wheel>=0.40.0",
 ]
 requires-python = ">3.8"
 

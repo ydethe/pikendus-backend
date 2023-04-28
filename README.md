@@ -6,16 +6,16 @@
 
 # Quick look
 
-A PEP517 compliant build backend, able to compile C and fortran source files
+pikendus backend is a PEP517 compliant build backend, able to compile C and fortran source files
+pikendus is an estonian word that means 'extension'
 
 # Build the doc
 
 Just run:
 
-    git-changelog --output CHANGELOG.md --in-place --version-regex '<a href="[^"]+">(?P<version>[^<]+)' --marker-line '<!-- new entries will be injected here -->'
     pdm doc
 
-This will create the doc in build/htmldoc
+This will create the doc in ./htmldoc
 
 A few guidelines for updating the doc
 https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
