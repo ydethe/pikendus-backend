@@ -67,6 +67,7 @@ def build_ext(
     src_dir: Path = typer.Argument(..., help="Dossier des sources"),
     dst_dir: Path = typer.Argument(..., help="Dossier où écrire les wrappers"),
 ):
+    "Génération des wrappers python"
     _build_ext(nom, sig_fic, src_dir, dst_dir)
 
 
@@ -75,7 +76,7 @@ def version_module(
     path: List[Path] = typer.Argument(..., help="Chemin vers une ou plusieurs librairie")
 ):
     """Lecture de la version d'une librairie en copie locale.
-    Par exemple, nom_ver_lib ~/Projets/libFichiers retourne libFichiers-5.0 si
+    Par exemple, version_module ~/Projets/libFichiers retourne libFichiers-5.0 si
     la lib est en version 5.0 dans le build.conf
     """
     _version_module(path)
