@@ -26,6 +26,11 @@ def build_ext(
     dst_dir: Path,
 ):
     "Génération des wrappers python"
+
+    sig_fic = sig_fic.expanduser().resolve()
+    src_dir = src_dir.expanduser().resolve()
+    dst_dir = dst_dir.expanduser().resolve()
+
     f2py_path = "f2py --quiet"
 
     fc = fcompiler.get_default_fcompiler()
@@ -85,10 +90,9 @@ def build_ext(
         os.popen(F2pyCommand)
 
     # move files
-    e0 = dst_dir.parts[0]
-    F2pyCommand = "rm -rf *.mod *.o *.so %s/src.* %s/%s" % (dst_dir, dst_dir, e0)
+    F2pyCommand = f"rm -rf *.mod *.o *.so {dst_dir}/src.*"
     os.popen(F2pyCommand).read()
 
-    if "libSysteme" not in nom:
-        F2pyCommand = "rm -rf %s/*_fortranobject.c" % dst_dir
-        os.popen(F2pyCommand).read()
+    # if "libSysteme" not in nom:
+    #     F2pyCommand = "rm -rf %s/*_fortranobject.c" % dst_dir
+    #     os.popen(F2pyCommand).read()
