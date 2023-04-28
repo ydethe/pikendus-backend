@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from pikendus_backend.scripts.gene_py_src import build_ext
+from pikendus_backend.scripts.compile import compile
 
 
 def test_build_ext():
@@ -14,5 +15,10 @@ def test_build_ext():
     )
 
 
+def test_compile():
+    compile(build_dir=Path("build/src"), src_dir=Path("ma_librairie"))
+
+
 if __name__ == "__main__":
-    test_build_ext()
+    # test_build_ext()
+    test_compile()

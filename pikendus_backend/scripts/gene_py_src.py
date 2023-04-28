@@ -6,11 +6,6 @@ from typing import List
 from numpy.distutils import fcompiler, ccompiler
 
 
-def get_ext(fic: str) -> str:
-    ext = fic.split(".")[-1]
-    return ext
-
-
 def liste_fic(root: Path, pattern: str = "**/*", ext: List[str] = ["*"]) -> List[Path]:
     list_fic = []
     found = root.rglob(f"{pattern}.*")
@@ -40,17 +35,18 @@ def build_ext(
     f90flags = f77flags
     cppflags = "-O0"
 
-    l_src = liste_fic(root=src_dir, ext=[".f"])
-    for pth in l_src:
+    l_src_found = liste_fic(root=src_dir, ext=[".f"])
+    l_src = list()
+    for pth in l_src_found:
         s = str(pth)
-        # Suppression de la liste des sources des sources C générés par
-        # un appel précédent à setup.py
-        if "fortranobject" in s:
-            l_src.remove(s)
-        if len(s) >= 8 and s[-8:] == "module.c":
-            l_src.remove(s)
-        if "f2pywrappers" in s:
-            l_src.remove(s)
+        # Suppression de la liste des sources générés par
+        # une précédente compilation
+        if (
+            "fortranobject" not in s
+            and not (len(s) >= 8 and s[-8:] == "module.c")
+            and "f2pywrappers" not in s
+        ):
+            l_src.append(s)
 
     print("Liste des sources à compiler :")
     for fs in l_src:
@@ -93,6 +89,5 @@ def build_ext(
     F2pyCommand = f"rm -rf *.mod *.o *.so {dst_dir}/src.*"
     os.popen(F2pyCommand).read()
 
-    # if "libSysteme" not in nom:
-    #     F2pyCommand = "rm -rf %s/*_fortranobject.c" % dst_dir
-    #     os.popen(F2pyCommand).read()
+    # F2pyCommand = "rm -rf %s/*fortranobject.c" % dst_dir
+    # os.popen(F2pyCommand).read()

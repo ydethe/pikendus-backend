@@ -13,6 +13,7 @@ from .scripts.ligne_debug import ligne_debug as _ligne_debug
 from .scripts.calc_dep_f90 import calc_dep_f90 as _calc_dep_f90
 from .scripts.gene_py_src import build_ext as _build_ext
 from .scripts.version_module import version_module as _version_module
+from .scripts.compile import compile as _compile
 
 
 app = typer.Typer()
@@ -80,3 +81,11 @@ def version_module(
     la lib est en version 5.0 dans le build.conf
     """
     _version_module(path)
+
+
+@app.command()
+def compile(
+    build_dir: Path = typer.Argument(..., help="Dossier de build (temporaire)"),
+    src_dir: Path = typer.Argument(..., help="Racine des sources du paquet"),
+):
+    _compile(build_dir, src_dir)
