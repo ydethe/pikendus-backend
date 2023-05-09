@@ -9,7 +9,7 @@ from .gene_py_src import build_ext
 from .ligne_debug import ligne_debug
 
 
-def compile(build_dir: Path, src_dir: Path):
+def compile(build_dir: Path, src_dir: Path, lib_dir: Path) -> Path:
     from .. import logger
 
     fcompiler.get_default_fcompiler()
@@ -18,23 +18,30 @@ def compile(build_dir: Path, src_dir: Path):
     with open("pyproject.toml", "r") as f:
         config = toml.load(f)
 
-    if not build_dir.exists():
-        build_dir.mkdir()
-    else:
-        if not build_dir.is_dir():
-            raise AssertionError(f"{build_dir} is not a directory")
+    if build_dir.exists() and not build_dir.is_dir():
+        raise AssertionError(f"{build_dir} is not a directory")
+    build_dir.mkdir(parents=True, exist_ok=True)
 
     for for_pth in src_dir.rglob("*.f"):
         ligne_debug(for_pth, build_dir / for_pth.name)
 
     for finc_pth in src_dir.rglob("*.finc"):
-        shutil.copy(finc_pth, build_dir / finc_pth.name)
+        dst = build_dir / finc_pth.name
+        if dst.exists():
+            dst.unlink()
+        shutil.copy(finc_pth, build_dir)
 
     for c_pth in src_dir.rglob("*.c"):
-        shutil.copy(c_pth, build_dir / c_pth.name)
+        dst = build_dir / c_pth.name
+        if dst.exists():
+            dst.unlink()
+        shutil.copy(c_pth, build_dir)
 
     for h_pth in src_dir.rglob("*.h"):
-        shutil.copy(h_pth, build_dir / h_pth.name)
+        dst = build_dir / h_pth.name
+        if dst.exists():
+            dst.unlink()
+        shutil.copy(h_pth, build_dir)
 
     pyf_pth = None
     for pyf_pth in src_dir.rglob("*.pyf"):
@@ -79,10 +86,13 @@ def compile(build_dir: Path, src_dir: Path):
         obj_list.append(str(obj_pth))
 
     obj_list_str = " ".join(obj_list)
-    dll_pth = src_dir / f"_{pyf_pth.stem}.so"
+
+    dll_pth = lib_dir / f"_{pyf_pth.stem}.so"
     cmd = (
         f"{linker} -o {dll_pth} {obj_list_str}  {lflags} "
         + "`python3-config --ldflags` -lgfortran -shared"
     )
     out = subprocess.run(cmd, stdout=subprocess.PIPE, shell=True, check=True)
     logger.info(f"Linked {dll_pth}")
+
+    return dll_pth

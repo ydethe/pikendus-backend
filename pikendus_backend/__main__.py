@@ -76,4 +76,5 @@ def compile(
     build_dir: Path = typer.Argument(..., help="Dossier de build (temporaire)"),
     src_dir: Path = typer.Argument(..., help="Racine des sources du paquet"),
 ):
-    _compile(build_dir, src_dir)
+    """Génère un .so à partir de sources fortran ou C"""
+    _compile(build_dir, src_dir, src_dir)

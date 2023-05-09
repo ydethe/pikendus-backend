@@ -74,8 +74,8 @@ def build_ext(
     F2pyCommand.append("%s" % " ".join([str(x) for x in l_src]))
     F2pyCommand.append(str(sig_fic))
     F2pyCommand.append("--build-dir %s" % dst_dir)
-    F2pyCommand.append("2> %s/log_f2py.txt" % dst_dir)
-    F2pyCommand.append(">  %s/log_f2py.txt" % dst_dir)
+    # F2pyCommand.append("2> %s/log_f2py.txt" % dst_dir)
+    # F2pyCommand.append(">  %s/log_f2py.txt" % dst_dir)
     F2pyCommand = " ".join(F2pyCommand)
     os.system(F2pyCommand)
 
