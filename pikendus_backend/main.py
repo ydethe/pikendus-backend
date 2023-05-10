@@ -14,8 +14,6 @@ def build_wheel(
     from .PikendusWheelBuilder import PikendusWheelBuilder
 
     with PikendusWheelBuilder(Path.cwd(), config_settings) as builder:
-        with open("/home/yannbdt/repos/pikendus_backend/check.log", "w") as f:
-            f.write(f"{wheel_directory}, {metadata_directory}")
         return builder.build(wheel_directory, metadata_directory=metadata_directory).name
 
 

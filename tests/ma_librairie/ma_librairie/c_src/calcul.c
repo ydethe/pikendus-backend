@@ -1,10 +1,16 @@
-// gcc -g -std=gnu99 `python3-config --includes` -Wall -c calcul.c -I. -o calcul.c.o -fPIC
+#include <stdint.h>
 #include <math.h>
-#include "item.h"
+#include "_pikendus_types.h"
 
-int c_func(int i, item *subptr)
+
+int c_create_rectangle(rectangle *r, uint32_t width, uint32_t height)
 {
-    subptr->i2 = 3.14159;
+    r->ll_corner.x=0;
+    r->ll_corner.y=0;
+
+    r->ur_corner.x=width;
+    r->ur_corner.y=height;
 
     return 0;
+
 }

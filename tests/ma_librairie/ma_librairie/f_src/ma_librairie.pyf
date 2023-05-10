@@ -1,9 +1,9 @@
 python module _ma_librairie
     interface
-        integer*4 function for_func(i, subptr)
-            integer*8, intent (in) :: i
-            integer*8 :: subptr
-        end function for_func
+        integer*4 function for_area(rectptr, area)
+            integer*8 :: rectptr
+            integer*4, intent(out) :: area
+        end function for_area
     end interface
 
 end python module _ma_librairie

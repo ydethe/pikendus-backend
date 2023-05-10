@@ -1,4 +1,6 @@
 import os
+from pathlib import Path
+from typing import List
 import yaml
 
 import networkx as nx
@@ -87,9 +89,9 @@ class Field(object):
             ctyp = "type(%s)" % self.typ
 
         if self.niter == 1:
-            return "    %s :: %s" % (ctyp, self.name)
+            return "         %s :: %s" % (ctyp, self.name)
         else:
-            return "    %s :: %s(0:%i)" % (ctyp, self.name, self.niter - 1)
+            return "         %s :: %s(0:%i)" % (ctyp, self.name, self.niter - 1)
 
     def toPyType(self) -> str:
         if self.isBasicType():
@@ -125,10 +127,11 @@ class DataStructure(object):
         return "\n".join(res)
 
     def toFHeader(self) -> str:
-        res = ["type %s" % self.name]
+        res = ["      type %s" % self.name]
+        f: Field
         for f in self.fields:
             res.append(f.toFType())
-        res.append("end type %s" % self.name)
+        res.append("      end type %s" % self.name)
         return "\n".join(res)
 
     def toPyHeader(self) -> str:
@@ -161,7 +164,12 @@ class DataStructure(object):
         return ds
 
 
-def generateTypeHeaders(root: str, out_file: str):
+def generateTypeHeaders(root: Path, out_file: Path) -> List[Path]:
+    created_files = []
+
+    out_dir = out_file.parent
+    out_dir.mkdir(exist_ok=True, parents=True)
+
     G = nx.DiGraph()
     for dirpath, dirnames, filenames in os.walk(root):
         for f in filenames:
@@ -177,9 +185,9 @@ def generateTypeHeaders(root: str, out_file: str):
     list_ds = list(topological_sort(G))
 
     # Generation header C
-    _, fn = os.path.split(out_file)
+    fn = out_file.stem
     macro_name = "_%s_H_" % fn.upper()
-    res = ["// %s.h" % out_file, "", "#include <stdint.h>", "", ""]
+    res = [f"// {out_file}.h", "", "#include <stdint.h>", "", ""]
     res.append("#ifndef %s" % macro_name)
     res.append("#define %s" % macro_name)
     res.append("")
@@ -189,32 +197,34 @@ def generateTypeHeaders(root: str, out_file: str):
     res.append("#endif")
     res.append("")
 
-    f = open("%s.h" % out_file, "w")
-    f.write("\n".join(res))
-    f.close()
+    with open(f"{out_file}.h", "w") as f:
+        f.write("\n".join(res))
+        created_files.append(Path(f"{out_file}.h"))
 
     # Generation header Fortran
-    res = ["! %s.finc" % out_file]
+    res = [f"! {out_file}.finc"]
     res.append("")
     for ds in list_ds:
         res.append(G.nodes[ds]["ds"].toFHeader())
         res.append("")
 
-    f = open("%s.finc" % out_file, "w")
-    f.write("\n".join(res))
-    f.close()
+    with open(f"{out_file}.finc", "w") as f:
+        f.write("\n".join(res))
+        created_files.append(Path(f"{out_file}.finc"))
 
     # Generation header Python
-    res = ["# %s.py" % out_file]
+    res = [f"# {out_file}.py"]
     res.append("")
     res.extend(["import ctypes", "", ""])
     for ds in list_ds:
         res.append(G.nodes[ds]["ds"].toPyHeader())
         res.append("")
 
-    f = open("%s.py" % out_file, "w")
-    f.write("\n".join(res))
-    f.close()
+    with open(f"{out_file}.py", "w") as f:
+        f.write("\n".join(res))
+        created_files.append(Path(f"{out_file}.py"))
+
+    return created_files
 
 
 def loadFunctionDescription(fic: str) -> dict:

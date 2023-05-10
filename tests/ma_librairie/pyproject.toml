@@ -4,7 +4,7 @@ build-backend = "pikendus_backend.main"
 
 [project]
 name = "ma-librairie"
-dynamic = ["version"]
+version = "0.1.0"
 description = "Tester mon build backend"
 authors = [
     { name = "Yann de Thé", email = "yann@johncloud.fr" },
@@ -26,7 +26,7 @@ Source = "https://gitlab.com/ydethe/ma-librairie"
 # f_compiler
 # linker
 fflags="-g -Wpadded -Wpacked -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant -Wunused -Wunderflow -Warray-temporaries -ffixed-line-length-132 -fcray-pointer -Os -fd-lines-as-comments -mavx -funroll-loops -fexpensive-optimizations -fno-range-check -fbackslash"
-cflags="-g -std=gnu99 -Wall -I."
+cflags="-g -std=gnu99 -Wall"
 # lflags
 struct_dir="data_struct"
 
@@ -64,9 +64,6 @@ testpaths = [
     "tests/",
 ]
 
-[tool.pdm.version]
-source = "scm"
-
 [[tool.pdm.source]]
 name = "local_test"
 verify_ssl = false
@@ -85,17 +82,13 @@ excludes = [
     "dist",
     "mockup",
     "ksy",
-    "**/*.f",
-    "**/*.finc",
-    "**/*.pyf",
-    "**/*.c",
-    "**/*.h",
     "**/*.o",
     "**/*.d",
     "**/*.html",
     "**/*.xml"
 ]
 editable-backend = "editables"
+is-purelib = false
 
 [tool.pdm.dev-dependencies]
 dev = [
