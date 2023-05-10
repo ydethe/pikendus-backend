@@ -14,15 +14,11 @@ dependencies = [
     "setuptools-scm>=7.1",
     "pdm-backend>=2.0.6",
     "wheel>=0.40.0",
-    "typer>=0.7.0",
     "numpy>=1.24.3",
     "toml>=0.10.2",
     "networkx>=3.1",
 ]
 requires-python = ">3.8"
-
-[project.scripts]
-pikendus_backend = "pikendus_backend.__main__:app"
 
 [project.urls]
 "Bug Tracker" = "https://gitlab.com/ydethe/pikendus-backend/issues"

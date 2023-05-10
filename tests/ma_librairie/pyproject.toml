@@ -28,7 +28,7 @@ Source = "https://gitlab.com/ydethe/ma-librairie"
 fflags="-g -Wpadded -Wpacked -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant -Wunused -Wunderflow -Warray-temporaries -ffixed-line-length-132 -fcray-pointer -Os -fd-lines-as-comments -mavx -funroll-loops -fexpensive-optimizations -fno-range-check -fbackslash"
 cflags="-g -std=gnu99 -Wall -I."
 # lflags
-struct_dir="ma_librairie/data_struct"
+struct_dir="data_struct"
 
 [tool.pylint.main]
 ignore-patterns = ["kt_*.py"]
@@ -66,6 +66,12 @@ testpaths = [
 
 [tool.pdm.version]
 source = "scm"
+
+[[tool.pdm.source]]
+name = "local_test"
+verify_ssl = false
+url = "../../dist"
+type = "find_links"
 
 [tool.pdm.build]
 includes = [

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Added test project ([a9fc290](https://gitlab.com/ydethe/pikendus-backend/commit/a9fc2908422e6cd6307c7208ca186f4c814c0924) by Yann BLAUDIN DE THE).
 - Added test library ([536163f](https://gitlab.com/ydethe/pikendus-backend/commit/536163f75cbbff152cb02fbe60e4928fcdefff8a) by Yann BLAUDIN DE THE).
 
 ## [v0.1.0](https://gitlab.com/ydethe/pikendus-backend/tags/v0.1.0) - 2023-05-09
