@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <math.h>
-#include "_pikendus_types.h"
+#include "pikendus_types.h"
 
 
 int c_init_rectangle(rectangle *r, uint32_t width, uint32_t height)

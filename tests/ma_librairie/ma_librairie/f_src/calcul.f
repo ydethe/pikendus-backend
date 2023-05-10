@@ -1,5 +1,5 @@
       integer*4 function for_area(rectptr, area)
-         include '_pikendus_types.finc'
+         include 'pikendus_types.finc'
 
          integer*8 :: rectptr
          integer*4, intent(out) :: area

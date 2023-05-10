@@ -53,9 +53,9 @@ line-length = 100
 [tool.pytest.ini_options]
 addopts = [
     "--import-mode=importlib",
-    "--html=build/htmldoc/tests/report.html",
+    "--html=htmldoc/tests/report.html",
     "--self-contained-html",
-    "--junitxml=build/junit.xml",
+    "--junitxml=htmldoc/junit.xml",
     "--cov-config=tests/coverage.conf",
     "--cov=ma_librairie",
     "--doctest-modules",
@@ -123,9 +123,9 @@ test = [
 [tool.pdm.scripts]
 site_packages = true
 doc.shell = """\
-    mkdir -p build/htmldoc/ma_librairie
-    pdoc --html --force --config latex_math=True -o build/htmldoc ma_librairie
-    coverage html -d build/htmldoc/coverage --rcfile tests/coverage.conf
-    docstr-coverage ma_librairie -miP -sp -is -idel --skip-file-doc --exclude ".*/kt.*.py" --badge=build/htmldoc/doc_badge.svg
-    coverage-badge -f -o build/htmldoc/cov_badge.svg
+    mkdir -p htmldoc/ma_librairie
+    pdoc --html --force --config latex_math=True -o htmldoc ma_librairie
+    coverage html -d htmldoc/coverage --rcfile tests/coverage.conf
+    docstr-coverage ma_librairie -miP -sp -is -idel --skip-file-doc --exclude ".*/kt.*.py" --badge=htmldoc/doc_badge.svg
+    coverage-badge -f -o htmldoc/cov_badge.svg
 """

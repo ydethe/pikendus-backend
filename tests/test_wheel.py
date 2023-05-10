@@ -19,5 +19,15 @@ def test_create_wheel():
             builder.build(wheel_directory.as_posix(), metadata_directory=metadata_directory)
 
 
+def ntest_generated_lib():
+    from ma_librairie.pikendus_types import rectangle
+    import ma_librairie.pikendus as p
+
+    r = rectangle()
+    p.c_init_rectangle(r, 3, 2)
+    area = p.for_area(r)
+    print(area)
+
+
 if __name__ == "__main__":
     test_create_wheel()

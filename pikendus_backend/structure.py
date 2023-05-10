@@ -240,7 +240,7 @@ def descToPython(build_dir: Path, dat: dict, pkg_name: str, type_files: List[Pat
     code.append("from importlib import import_module")
 
     func_code = f"""\
-def resource_path(resource: str) -> str:
+def _resource_path(resource: str) -> str:
     module = import_module("{pkg_name}")
     spec = module.__spec__
 
@@ -261,6 +261,7 @@ def resource_path(resource: str) -> str:
             ms = str(m)
             ms = ms.replace(".py", "")
             elem = ms.split("/")
+            code.append("")
             code.append(f"from {'.'+'.'.join(elem[:-1] )} import {elem[0] }")
         elif file.suffix == ".so":
             dll_name = file.name
@@ -289,7 +290,7 @@ def resource_path(resource: str) -> str:
                     ctyp = ""
                     byref = True
                 line_def += f"""{arg["name"]}: {typ}, """
-                l_arg_in.append((arg["name"], ctyp, byref))
+                l_arg_in.append((arg, ctyp, byref))
 
         l_out = []
         l_arg_out = []
@@ -304,7 +305,7 @@ def resource_path(resource: str) -> str:
                     ctyp = arg["type"]
                     create = True
                 l_out.append(typ)
-                l_arg_out.append((arg["name"], typ, ctyp, create))
+                l_arg_out.append((arg, typ, ctyp, create))
 
         if len(l_out) == 0:
             line_def = line_def[:-2] + "):"
@@ -313,10 +314,40 @@ def resource_path(resource: str) -> str:
         else:
             line_def = line_def[:-2] + ") -> Tuple[%s]:" % (", ".join(l_out))
         code.append(line_def)
-        code.append("    '''%s'''" % dat[fname]["help"])
 
+        # Building the docstring
+        # ----------------------
+        code.append(f"""    '''{dat[fname]["help"]}""")
+        code.append("")
+
+        if len(l_arg_in) > 0:
+            code.append("    Args:")
+
+            for arg, typ, byref in l_arg_in:
+                line = f"""        {arg['name'] }: {arg['help']}"""
+                if "unit" in arg.keys():
+                    line += f" ({arg['unit']})"
+                code.append(line)
+
+            code.append("")
+
+        if len(l_arg_out) > 0:
+            code.append("    Returns:")
+
+            for arg, typ, ctyp, create in l_arg_out:
+                line = f"""        {arg['name'] }: {arg['help']}"""
+                if "unit" in arg.keys():
+                    line += f" ({arg['unit']})"
+                code.append(line)
+
+            code.append("")
+
+        code.append("""    '''""")
+
+        # Binary library importation
+        # --------------------------
         if dat[fname]["langage"] == "C":
-            code.append(f"""    lib_pth = resource_path("{dll_name}")""")
+            code.append(f"""    lib_pth = _resource_path("{dll_name}")""")
             code.append("    lib = ctypes.cdll.LoadLibrary(lib_pth)")
         elif dat[fname]["langage"] == "F":
             code.append(f"""    lib = import_module("{pkg_name}._{pkg_name}")""")
@@ -325,10 +356,10 @@ def resource_path(resource: str) -> str:
         # -------------------------------
         if dat[fname]["langage"] == "C":
             for arg, typ, byref in l_arg_in:
-                code.append("""    itf_%s = %s(%s)""" % (arg, typ, arg))
+                code.append("""    itf_%s = %s(%s)""" % (arg["name"], typ, arg["name"]))
 
             for arg, typ, ctyp, create in l_arg_out:
-                code.append("""    itf_%s = %s()""" % (arg, ctyp))
+                code.append("""    itf_%s = %s()""" % (arg["name"], ctyp))
 
         # Calling the compiled function
         # -------------------------------
@@ -337,22 +368,22 @@ def resource_path(resource: str) -> str:
         elif dat[fname]["langage"] == "F":
             line_call = "    res"
             for arg, typ, ctyp, create in l_arg_out:
-                line_call += f", {arg}"
+                line_call += f", {arg['name']}"
             line_call += f" = lib.{fname}("
 
         for arg, typ, byref in l_arg_in:
             if byref and dat[fname]["langage"] == "F":
-                line_call += "addressof(%s), " % arg
+                line_call += "addressof(%s), " % arg["name"]
             elif byref and dat[fname]["langage"] == "C":
-                line_call += "byref(itf_%s), " % arg
+                line_call += "byref(itf_%s), " % arg["name"]
             elif not byref and dat[fname]["langage"] == "F":
-                line_call += "%s, " % arg
+                line_call += "%s, " % arg["name"]
             elif not byref and dat[fname]["langage"] == "C":
-                line_call += "itf_%s, " % arg
+                line_call += "itf_%s, " % arg["name"]
 
         if dat[fname]["langage"] == "C":
             for arg, typ, ctyp, create in l_arg_out:
-                line_call += "byref(itf_%s), " % arg
+                line_call += "byref(itf_%s), " % arg["name"]
 
         line_call = line_call[:-2] + ")"
         code.append(line_call)
@@ -369,11 +400,11 @@ def resource_path(resource: str) -> str:
 
             for arg, typ, ctyp, create in l_arg_out:
                 if create and dat[fname]["langage"] == "C":
-                    line_ret += "itf_%s, " % arg
+                    line_ret += "itf_%s, " % arg["name"]
                 elif not create and dat[fname]["langage"] == "C":
-                    line_ret += "itf_%s.value, " % arg
+                    line_ret += "itf_%s.value, " % arg["name"]
                 elif dat[fname]["langage"] == "F":
-                    line_ret += "%s, " % arg
+                    line_ret += "%s, " % arg["name"]
 
             code.append(line_ret[:-2])
 

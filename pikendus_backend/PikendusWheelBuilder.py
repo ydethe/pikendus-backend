@@ -35,7 +35,7 @@ class PikendusWheelBuilder(WheelBuilder):
         pikendus_config = tool_config.get("pikendus", dict())
         struct_dir = pikendus_config.get("struct_dir", "data_struct")
         type_files = generateTypeHeaders(
-            root=Path(struct_dir), out_file=context.build_dir / module_name / "_pikendus_types"
+            root=Path(struct_dir), out_file=context.build_dir / module_name / "pikendus_types"
         )
         for file in type_files:
             yield file.relative_to(context.build_dir).as_posix(), file
@@ -50,7 +50,7 @@ class PikendusWheelBuilder(WheelBuilder):
             root=Path(struct_dir),
             type_files=type_files + [dll_path],
             pkg_name=module_name,
-            out_file=context.build_dir / module_name / "_pikendus.py",
+            out_file=context.build_dir / module_name / "pikendus.py",
         )
         yield file_pth.relative_to(context.build_dir).as_posix(), file_pth
 
