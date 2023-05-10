@@ -7,8 +7,8 @@ __all__ = ["build_wheel", "build_sdist"]
 
 def build_wheel(
     wheel_directory: str,
-    config_settings: Mapping[str, Any] | None = None,
-    metadata_directory: str | None = None,
+    config_settings: Mapping[str, Any] = None,
+    metadata_directory: str = None,
 ) -> str:
     """Builds a wheel, places it in wheel_directory"""
     from .PikendusWheelBuilder import PikendusWheelBuilder
@@ -17,7 +17,7 @@ def build_wheel(
         return builder.build(wheel_directory, metadata_directory=metadata_directory).name
 
 
-def build_sdist(sdist_directory: str, config_settings: Mapping[str, Any] | None = None) -> str:
+def build_sdist(sdist_directory: str, config_settings: Mapping[str, Any] = None) -> str:
     """Builds an sdist, places it in sdist_directory"""
     from pdm.backend.sdist import SdistBuilder
 

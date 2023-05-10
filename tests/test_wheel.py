@@ -3,7 +3,7 @@ import shutil
 
 from pdm.backend.utils import cd
 
-from pikendus_backend.PikendusWheelBuilder import PikendusWheelBuilder
+from pikendus_backend.main import build_wheel, build_sdist
 
 
 def test_create_wheel():
@@ -12,11 +12,18 @@ def test_create_wheel():
         if rel_build_dir.exists():
             shutil.rmtree(rel_build_dir)
 
-        project = Path(".").absolute()
         wheel_directory = Path("dist").absolute()
-        metadata_directory = None
-        with PikendusWheelBuilder(project) as builder:
-            builder.build(wheel_directory.as_posix(), metadata_directory=metadata_directory)
+        build_wheel(wheel_directory=str(wheel_directory))
+
+
+def test_create_sdist():
+    rel_build_dir = Path("build")
+    with cd("tests/ma_librairie"):
+        if rel_build_dir.exists():
+            shutil.rmtree(rel_build_dir)
+
+        sdist_directory = Path("dist").absolute()
+        build_sdist(sdist_directory=str(sdist_directory))
 
 
 def ntest_generated_lib():
