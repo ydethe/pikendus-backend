@@ -3,7 +3,7 @@
 #include "_pikendus_types.h"
 
 
-int c_create_rectangle(rectangle *r, uint32_t width, uint32_t height)
+int c_init_rectangle(rectangle *r, uint32_t width, uint32_t height)
 {
     r->ll_corner.x=0;
     r->ll_corner.y=0;

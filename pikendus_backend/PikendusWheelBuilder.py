@@ -5,7 +5,7 @@ from importlib.metadata import version as get_version
 from pdm.backend.hooks import Context
 from pdm.backend.wheel import WheelBuilder
 
-from .structure import generateTypeHeaders
+from .structure import generateTypeHeaders, generateFunctionHeaders
 from .scripts.compile import compile
 from .scripts.gene_py_src import generate_wrappers
 
@@ -34,15 +34,25 @@ class PikendusWheelBuilder(WheelBuilder):
         tool_config = context.config.data.get("tool", dict())
         pikendus_config = tool_config.get("pikendus", dict())
         struct_dir = pikendus_config.get("struct_dir", "data_struct")
-        for file in generateTypeHeaders(
+        type_files = generateTypeHeaders(
             root=Path(struct_dir), out_file=context.build_dir / module_name / "_pikendus_types"
-        ):
+        )
+        for file in type_files:
             yield file.relative_to(context.build_dir).as_posix(), file
 
         generate_wrappers(context.config.data, src_dir, context.build_dir)
 
         dll_path = compile(pdm_build_dir=context.build_dir, src_dir=src_dir)
         yield dll_path.absolute().relative_to(context.build_dir).as_posix(), dll_path
+
+        file_pth = generateFunctionHeaders(
+            build_dir=context.build_dir,
+            root=Path(struct_dir),
+            type_files=type_files + [dll_path],
+            pkg_name=module_name,
+            out_file=context.build_dir / module_name / "_pikendus.py",
+        )
+        yield file_pth.relative_to(context.build_dir).as_posix(), file_pth
 
         yield from self._get_metadata_files(context)
 

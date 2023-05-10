@@ -1,52 +1,28 @@
-f_nb_items:
-    help: Gets the number of items
+c_init_rectangle:
+    help: Initialize a rectangle
+    langage: C
+    arguments:
+    - name: r
+      type: rectangle
+      intent: in
+      help: Input rectangle
+    - name: width
+      type: u4
+      intent: in
+      help: Width of the rectangle
+    - name: height
+      type: u4
+      intent: in
+      help: Height of the rectangle
+for_area:
+    help: Compute the area of a rectangle
     langage: F
     arguments:
-    - name: a
-      type: main_t
+    - name: r
+      type: rectangle
       intent: in
-      help: Input structure
-    - name: size
+      help: Input rectangle
+    - name: area
       type: u4
       intent: out
-      help: Size of the structure
-access_item:
-    help: Returns an item at given index
-    langage: C
-    arguments:
-    - name: a
-      type: main_t
-      intent: in
-      help: Input structure
-    - name: idx
-      type: u4
-      intent: in
-      help: Index of the item to retrieve
-    - name: b
-      type: item_t
-      intent: out
-      help: Item at index idx
-init_struct:
-    help: Initiates a structure with a given number of items
-    langage: C
-    arguments:
-    - name: a
-      type: main_t
-      intent: in
-      help: Input structure
-    - name: count
-      type: u4
-      intent: in
-      help: Number of items to create
-c_nb_items:
-    help: Gets the number of items
-    langage: C
-    arguments:
-    - name: a
-      type: main_t
-      intent: in
-      help: Input structure
-    - name: size
-      type: u4
-      intent: out
-      help: Size of the structure
+      help: Area of the rectangle

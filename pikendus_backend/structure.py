@@ -233,11 +233,44 @@ def loadFunctionDescription(fic: str) -> dict:
     return dat
 
 
-def descToPython(dat: dict, pkg_name: str) -> str:
+def descToPython(build_dir: Path, dat: dict, pkg_name: str, type_files: List[Path]) -> str:
     code = ["import ctypes"]
-    code.append("from ctypes import byref")
-    code.append("from %s.include.%s_ds import *" % (pkg_name, pkg_name))
-    code.append("""lib = ctypes.cdll.LoadLibrary("./%s/_%s.so")""" % (pkg_name, pkg_name))
+    code.append("from ctypes import byref, addressof")
+    code.append("import os")
+    code.append("from importlib import import_module")
+
+    func_code = f"""\
+def resource_path(resource: str) -> str:
+    module = import_module("{pkg_name}")
+    spec = module.__spec__
+
+    for root in spec.submodule_search_locations:
+        path = os.path.join(root, resource)
+        if os.path.exists(path):
+            path = path.replace("\\\\", "/")
+            if path[1] == ":":
+                path = "/%s/%s" % (path[0].lower(), path[3:])
+            return path
+
+    raise FileExistsError(resource)
+"""
+
+    for file in type_files:
+        if file.suffix == ".py":
+            m = file.relative_to(build_dir / pkg_name)
+            ms = str(m)
+            ms = ms.replace(".py", "")
+            elem = ms.split("/")
+            code.append(f"from {'.'+'.'.join(elem[:-1] )} import {elem[0] }")
+        elif file.suffix == ".so":
+            dll_name = file.name
+
+    code.append("")
+    code.append("")
+
+    code.append(func_code)
+
+    code.append("")
 
     for fname in dat.keys():
         # Building function declaration line,
@@ -252,10 +285,10 @@ def descToPython(dat: dict, pkg_name: str) -> str:
                     ctyp = _py_types_map[arg["type"]]
                     byref = False
                 else:
-                    typ = arg["type"]
+                    typ = f"""{ms}.{arg["type"]}"""
                     ctyp = ""
                     byref = True
-                line_def += "%s: %s, " % (arg["name"], typ)
+                line_def += f"""{arg["name"]}: {typ}, """
                 l_arg_in.append((arg["name"], ctyp, byref))
 
         l_out = []
@@ -282,31 +315,44 @@ def descToPython(dat: dict, pkg_name: str) -> str:
         code.append(line_def)
         code.append("    '''%s'''" % dat[fname]["help"])
 
+        if dat[fname]["langage"] == "C":
+            code.append(f"""    lib_pth = resource_path("{dll_name}")""")
+            code.append("    lib = ctypes.cdll.LoadLibrary(lib_pth)")
+        elif dat[fname]["langage"] == "F":
+            code.append(f"""    lib = import_module("{pkg_name}._{pkg_name}")""")
+
         # Building local variables
         # -------------------------------
-        for arg, typ, byref in l_arg_in:
-            code.append("""    itf_%s = %s(%s)""" % (arg, typ, arg))
+        if dat[fname]["langage"] == "C":
+            for arg, typ, byref in l_arg_in:
+                code.append("""    itf_%s = %s(%s)""" % (arg, typ, arg))
 
-        for arg, typ, ctyp, create in l_arg_out:
-            code.append("""    itf_%s = %s()""" % (arg, ctyp))
+            for arg, typ, ctyp, create in l_arg_out:
+                code.append("""    itf_%s = %s()""" % (arg, ctyp))
 
         # Calling the compiled function
         # -------------------------------
-        if dat[fname]["langage"] == "F":
-            line_call = "    res=lib.%s_(" % fname
-        elif dat[fname]["langage"] == "C":
-            line_call = "    res=lib.%s(" % fname
-        else:
-            raise ValueError(dat[fname]["langage"])
+        if dat[fname]["langage"] == "C":
+            line_call = "    res = lib.%s(" % fname
+        elif dat[fname]["langage"] == "F":
+            line_call = "    res"
+            for arg, typ, ctyp, create in l_arg_out:
+                line_call += f", {arg}"
+            line_call += f" = lib.{fname}("
 
         for arg, typ, byref in l_arg_in:
-            if byref:
+            if byref and dat[fname]["langage"] == "F":
+                line_call += "addressof(%s), " % arg
+            elif byref and dat[fname]["langage"] == "C":
                 line_call += "byref(itf_%s), " % arg
-            else:
+            elif not byref and dat[fname]["langage"] == "F":
+                line_call += "%s, " % arg
+            elif not byref and dat[fname]["langage"] == "C":
                 line_call += "itf_%s, " % arg
 
-        for arg, typ, ctyp, create in l_arg_out:
-            line_call += "byref(itf_%s), " % arg
+        if dat[fname]["langage"] == "C":
+            for arg, typ, ctyp, create in l_arg_out:
+                line_call += "byref(itf_%s), " % arg
 
         line_call = line_call[:-2] + ")"
         code.append(line_call)
@@ -322,19 +368,24 @@ def descToPython(dat: dict, pkg_name: str) -> str:
             line_ret = "    return "
 
             for arg, typ, ctyp, create in l_arg_out:
-                if create:
+                if create and dat[fname]["langage"] == "C":
                     line_ret += "itf_%s, " % arg
-                else:
+                elif not create and dat[fname]["langage"] == "C":
                     line_ret += "itf_%s.value, " % arg
+                elif dat[fname]["langage"] == "F":
+                    line_ret += "%s, " % arg
 
             code.append(line_ret[:-2])
 
+        code.append("")
         code.append("")
 
     return "\n".join(code)
 
 
-def generateFunctionHeaders(root: Path, pkg_name: str, out_file: Path):
+def generateFunctionHeaders(
+    build_dir: Path, root: Path, type_files: List[Path], pkg_name: str, out_file: Path
+) -> Path:
     for dirpath, dirnames, filenames in os.walk(root):
         for f in filenames:
             _, ext = os.path.splitext(f)
@@ -343,19 +394,26 @@ def generateFunctionHeaders(root: Path, pkg_name: str, out_file: Path):
 
             fd_pth = os.path.join(dirpath, f)
             fcts = loadFunctionDescription(fd_pth)
-            code = descToPython(fcts, pkg_name)
+            code = descToPython(build_dir, fcts, pkg_name, type_files)
             with open(out_file, "w") as f:
                 f.write(code)
 
+    return out_file.absolute()
+
 
 if __name__ == "__main__":
-    generateTypeHeaders(
+    type_files = generateTypeHeaders(
         Path("tests/ma_librairie/data_struct"),
-        out_file=Path("tests/ma_librairie/build/_pikendus_types"),
+        out_file=Path("tests/ma_librairie/build/ma_librairie/_pikendus_types"),
+    )
+    type_files.append(
+        Path("tests/ma_librairie/build/ma_librairie/_ma_librairie.cpython-310-x86_64-linux-gnu.so")
     )
 
     generateFunctionHeaders(
-        Path("tests/ma_librairie/data_struct"),
+        build_dir=Path("tests/ma_librairie/build"),
+        root=Path("tests/ma_librairie/data_struct"),
+        type_files=type_files,
         pkg_name="ma_librairie",
-        out_file=Path("tests/ma_librairie/build/_pikendus.py"),
+        out_file=Path("tests/ma_librairie/build/ma_librairie/_pikendus.py"),
     )
