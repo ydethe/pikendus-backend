@@ -10,10 +10,12 @@ c_init_rectangle:
       type: u4
       intent: in
       help: Width of the rectangle
+      unit: m
     - name: height
       type: u4
       intent: in
       help: Height of the rectangle
+      unit: m
 for_area:
     help: Compute the area of a rectangle
     langage: F
@@ -26,3 +28,5 @@ for_area:
       type: u4
       intent: out
       help: Area of the rectangle
+      unit: m2
+      unit: m
