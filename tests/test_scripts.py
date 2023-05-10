@@ -16,7 +16,7 @@ def test_build_ext():
 
 
 def test_compile():
-    compile(build_dir=Path("build/src"), src_dir=Path("ma_librairie"))
+    compile(build_dir=Path("build/src"), src_dir=Path("ma_librairie"), lib_dir=Path("ma_librairie"))
 
 
 if __name__ == "__main__":

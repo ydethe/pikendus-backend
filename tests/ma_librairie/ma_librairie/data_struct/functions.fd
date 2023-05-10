@@ -1,0 +1,52 @@
+f_nb_items:
+    help: Gets the number of items
+    langage: F
+    arguments:
+    - name: a
+      type: main_t
+      intent: in
+      help: Input structure
+    - name: size
+      type: uint32
+      intent: out
+      help: Size of the structure
+access_item:
+    help: Returns an item at given index
+    langage: C
+    arguments:
+    - name: a
+      type: main_t
+      intent: in
+      help: Input structure
+    - name: idx
+      type: uint32
+      intent: in
+      help: Index of the item to retrieve
+    - name: b
+      type: item_t
+      intent: out
+      help: Item at index idx
+init_struct:
+    help: Initiates a structure with a given number of items
+    langage: C
+    arguments:
+    - name: a
+      type: main_t
+      intent: in
+      help: Input structure
+    - name: count
+      type: uint32
+      intent: in
+      help: Number of items to create
+c_nb_items:
+    help: Gets the number of items
+    langage: C
+    arguments:
+    - name: a
+      type: main_t
+      intent: in
+      help: Input structure
+    - name: size
+      type: uint32
+      intent: out
+      help: Size of the structure
