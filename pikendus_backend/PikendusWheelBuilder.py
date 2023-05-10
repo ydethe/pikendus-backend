@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import IO, Iterable
+from typing import IO, Iterable, Tuple
 from importlib.metadata import version as get_version
 
 from pdm.backend.hooks import Context
@@ -11,7 +11,7 @@ from .scripts.gene_py_src import generate_wrappers
 
 
 class PikendusWheelBuilder(WheelBuilder):
-    def get_files(self, context: Context) -> Iterable[tuple[str, Path]]:
+    def get_files(self, context: Context) -> Iterable[Tuple[str, Path]]:
         package_dir = self.config.build_config.package_dir
 
         if package_dir == "":

@@ -334,7 +334,7 @@ def descToPython(dat: dict, pkg_name: str) -> str:
     return "\n".join(code)
 
 
-def generateFunctionHeaders(root: str, pkg_name: str, out_file: str):
+def generateFunctionHeaders(root: Path, pkg_name: str, out_file: Path):
     for dirpath, dirnames, filenames in os.walk(root):
         for f in filenames:
             _, ext = os.path.splitext(f)
@@ -344,19 +344,18 @@ def generateFunctionHeaders(root: str, pkg_name: str, out_file: str):
             fd_pth = os.path.join(dirpath, f)
             fcts = loadFunctionDescription(fd_pth)
             code = descToPython(fcts, pkg_name)
-            f = open(out_file, "w")
-            f.write(code)
-            f.close()
+            with open(out_file, "w") as f:
+                f.write(code)
 
 
 if __name__ == "__main__":
     generateTypeHeaders(
-        "/home/yannbdt/repos/ma_librairie/ma_librairie/data_struct",
-        out_file="/home/yannbdt/repos/ma_librairie/build/pikendus/test",
+        Path("tests/ma_librairie/data_struct"),
+        out_file=Path("tests/ma_librairie/build/_pikendus_types"),
     )
 
-    # generateFunctionHeaders(
-    #     "pyFramework/data_struct",
-    #     pkg_name="pyFramework",
-    #     out_file="pyFramework/pyFramework.py",
-    # )
+    generateFunctionHeaders(
+        Path("tests/ma_librairie/data_struct"),
+        pkg_name="ma_librairie",
+        out_file=Path("tests/ma_librairie/build/_pikendus.py"),
+    )

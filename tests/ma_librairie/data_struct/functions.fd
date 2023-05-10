@@ -7,7 +7,7 @@ f_nb_items:
       intent: in
       help: Input structure
     - name: size
-      type: uint32
+      type: u4
       intent: out
       help: Size of the structure
 access_item:
@@ -19,7 +19,7 @@ access_item:
       intent: in
       help: Input structure
     - name: idx
-      type: uint32
+      type: u4
       intent: in
       help: Index of the item to retrieve
     - name: b
@@ -35,7 +35,7 @@ init_struct:
       intent: in
       help: Input structure
     - name: count
-      type: uint32
+      type: u4
       intent: in
       help: Number of items to create
 c_nb_items:
@@ -47,6 +47,6 @@ c_nb_items:
       intent: in
       help: Input structure
     - name: size
-      type: uint32
+      type: u4
       intent: out
       help: Size of the structure
