@@ -126,9 +126,17 @@ doc.shell = """\
     mkdir -p htmldoc/pikendus_backend
     pikendus gen-includes tests/ma_librairie/data_struct/description.yaml docs/example --markdown
     pikendus gen-wrappers tests/ma_librairie/data_struct/description.yaml ma_librairie docs/wrappers.py --markdown
-    mkdocs serve
+    mkdocs build --site-dir htmldoc
     coverage html -d htmldoc/coverage --rcfile tests/coverage.conf
     docstr-coverage pikendus_backend -miP -sp -is -idel --skip-file-doc --exclude ".*/kt.*.py" --badge=htmldoc/doc_badge.svg
     coverage-badge -f -o htmldoc/cov_badge.svg
 """
-    # mkdocs build --site-dir htmldoc
+serve.shell = """\
+    mkdir -p htmldoc/pikendus_backend
+    pikendus gen-includes tests/ma_librairie/data_struct/description.yaml docs/example --markdown
+    pikendus gen-wrappers tests/ma_librairie/data_struct/description.yaml ma_librairie docs/wrappers.py --markdown
+    coverage html -d htmldoc/coverage --rcfile tests/coverage.conf
+    docstr-coverage pikendus_backend -miP -sp -is -idel --skip-file-doc --exclude ".*/kt.*.py" --badge=htmldoc/doc_badge.svg
+    coverage-badge -f -o htmldoc/cov_badge.svg
+    mkdocs serve
+"""
