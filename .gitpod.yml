@@ -4,5 +4,9 @@ tasks:
     init: >
       sudo apt install gfortran curl &&
       curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3 - &&
-      export PATH=/workspace/.pyenv_mirror/user/current/bin:$PATH
+      export PATH=/workspace/.pyenv_mirror/user/current/bin:$PATH &&
+      pdm venv create &&
+      pdm use .venv/bin/python &&
+      source .venv/bin/activate &&
+      pdm install
       
