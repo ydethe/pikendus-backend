@@ -47,8 +47,9 @@ package:
     - apt-get install -yqq --no-install-recommends git python3-venv curl
     - curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3 -
     - export PATH=/root/.local/bin:$PATH
-    - pdm config repository.pypi.url https://upload.pypi.org/legacy/
-    - pdm config repository.pypi.username __token__
-    - pdm config repository.pypi.password ${PYPI_TOKEN}
+    - pdm config --global repository.pypi.url https://upload.pypi.org/legacy/
+    - pdm config --global repository.pypi.username __token__
+    - pdm config --global repository.pypi.password ${PYPI_TOKEN}
+    - pdm config
     - pdm publish
 
