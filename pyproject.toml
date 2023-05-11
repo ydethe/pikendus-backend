@@ -27,7 +27,7 @@ requires-python = ">3.8"
 "Bug Tracker" = "https://gitlab.com/ydethe/pikendus-backend/issues"
 Homepage = "https://gitlab.com/ydethe/pikendus-backend"
 Source = "https://gitlab.com/ydethe/pikendus-backend"
-Documentation = "https://ydethe.gitlab.io/-/pikendus-backend/-/jobs/4267041254/artifacts/htmldoc/index.html"
+Documentation = "https://ydethe.gitlab.io/pikendus-backend/pikendus-backend"
 
 [tool.pylint.main]
 ignore-patterns = ["kt_*.py"]

@@ -22,18 +22,20 @@ test:
     paths:
       - htmldoc
 
-# https://ydethe.gitlab.io/pikendus-backend/htmldoc/pikendus-backend/
+# https://ydethe.gitlab.io/pikendus-backend/pikendus-backend/
 pages:
   stage: deploy
   dependencies:
   - test
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v(?:\d+.){2}(?:\d+)$/
+      when: always
   script:
-    - cp -r htmldoc public
+    - mkdir -p public
+    - cp -r htmldoc/* public
   artifacts:
     paths:
       - public
-  rules:
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 
 package:
   stage: deploy
