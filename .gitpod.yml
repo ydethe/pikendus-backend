@@ -1,15 +1,14 @@
 # List the start up tasks. Learn more: https://www.gitpod.io/docs/configure/workspaces/tasks
 tasks:
   - name: Package installation
-    before: >
-      sudo apt-get install -yq gfortran curl zsh &&
-      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &&
-      curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3 - &&
-      export PATH=/workspace/.pyenv_mirror/user/current/bin:$PATH &&
-      pip install pre-commit &&
-      pre-commit install &&
-      ( [ -d .venv ] || ( pdm venv create &&
-      pdm use .venv/bin/python &&
-      cp .pdm.lock pdm.lock ) ) &&
+    init: |
+      sudo apt-get install -yq gfortran curl zsh
+      sudo chsh -s /usr/bin/zsh
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3 -
+      export PATH=/workspace/.pyenv_mirror/user/current/bin:$PATH
+      pip install pre-commit
+      pre-commit install
+      ( [ -d .venv ] || ( pdm venv create && pdm use .venv/bin/python && cp .pdm.lock pdm.lock ) )
       pdm install
       
