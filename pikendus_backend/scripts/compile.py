@@ -66,7 +66,7 @@ def compile(pdm_build_dir: Path, src_dir: Path) -> Path:
         "-Wintrinsics-std -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant "
         "-Wunused -Wunderflow -Warray-temporaries -ffixed-line-length-132 "
         "-fcray-pointer -Os -fd-lines-as-comments -mavx -funroll-loops "
-        "-fexpensive-optimizations -fno-range-check -fbackslash",
+        "-fexpensive-optimizations -fno-range-check -fbackslash -fimplicit-none",
     )
     cflags: str = pikendus_cfg.get("cflags", "-g -std=gnu99 -Wall")
     lflags: str = pikendus_cfg.get("lflags", "")

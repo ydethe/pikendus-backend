@@ -9,6 +9,8 @@ description = "A PEP517 compliant build backend, able to compile C and fortran s
 authors = [
     { name = "Yann de Thé", email = "yann@johncloud.fr" },
 ]
+readme = "README.md"
+license = {file = "LICENSE"}
 dependencies = [
     "rich>=13.3",
     "setuptools-scm>=7.1",
@@ -88,6 +90,8 @@ dev = [
     "snakeviz>=2.1.2",
     "types-PyYAML>=6.0.12.9",
     "networkx-stubs>=0.0.1",
+    "doc>=0.1.0",
+    "mkdocs-include-markdown-plugin>=3.9.1",
 ]
 maintain = [
     "black==22.3.0",
@@ -99,6 +103,7 @@ quality = [
     "ruff>=0.0.246",
 ]
 doc = [
+    "jinja2>=3.0.0,<3.1.0",
     "mkdocs-material>=9.1.11",
 ]
 test = [

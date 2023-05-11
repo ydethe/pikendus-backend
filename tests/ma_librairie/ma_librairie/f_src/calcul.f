@@ -6,15 +6,15 @@
 
          type(rectangle) :: rect
          pointer(rectptr, rect)
+         integer*4 :: tmp
 
          write(6,*) "[DEBUG]Ceci est un message de debug"
 
-         area = (rect%ur_corner%x - rect%ll_corner%x) *
-     &          (rect%ur_corner%y - rect%ll_corner%y)
+         tmp = (rect%ur_corner%x - rect%ll_corner%x) *
+     &         (rect%ur_corner%y - rect%ll_corner%y)
 
-         area = abs(area)
+         area = abs(tmp)
 
          for_area = 0
 
       end function
-

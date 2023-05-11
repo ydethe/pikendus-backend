@@ -1,20 +1,49 @@
-# Welcome to MkDocs
+# Introduction
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+pikendus backend is a build backend compliant to [PEP517](https://peps.python.org/pep-0517/). It allows buliding wheel and sdist files, and to compile C and fortran sources into a shared library packed with the wheel file.
 
-## Commands
+# Usage
+## Project configuration
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+Just include the following lines into your pyproject.toml file:
 
-## Project layout
+```toml
+[build-system]
+requires = ["pikendus-backend>=0.2.3"]
+build-backend = "pikendus_backend.main"
+```
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+You can finely configure pikendus itself with the following block:
 
-## Project Overview
+```toml
+[tool.pikendus]
+c_compiler = "gcc"
+f_compiler = "gfortran"
+linker = "gcc"
+fflags = "-g -Wpadded -Wpacked -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant -Wunused -Wunderflow -Warray-temporaries -ffixed-line-length-132 -fcray-pointer -Os -fd-lines-as-comments -mavx -funroll-loops -fexpensive-optimizations -fno-range-check -fbackslash -fimplicit-none"
+cflags = "-g -std=gnu99 -Wall"
+lflags = ""
+structure_description = "data_struct/description.yaml"
+```
+
+These are the default options. If you write something else, they will be overriden. Note that the '-fPIC' compilation flag is automatically added, and that the '-shared' linker flag is also automatically added.
+The structure_description option is described below.
+
+## Shared structure description
+
+pikendus offers a way of describing shared structures. [See an example](https://gitlab.com/ydethe/pikendus-backend/-/blob/master/tests/ma_librairie/data_struct/description.yaml)
+
+## Fortran coding standard
+
+* Derived types have to be passed by pointer
+
+* Only [cray pointers](https://gcc.gnu.org/onlinedocs/gfortran/Cray-pointers.html) are supported
+
+* Include pikendus_types.finc to get the generated derived types working
+
+```fortran
+include 'pikendus_types.finc'
+```
+
+## C coding standard
 

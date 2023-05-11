@@ -1,5 +1,5 @@
 [build-system]
-requires = ["pikendus-backend"]
+requires = ["pikendus-backend==0.2.3"]
 build-backend = "pikendus_backend.main"
 
 [project]
@@ -25,7 +25,7 @@ Source = "https://gitlab.com/ydethe/ma-librairie"
 # c_compiler
 # f_compiler
 # linker
-fflags="-g -Wpadded -Wpacked -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant -Wunused -Wunderflow -Warray-temporaries -ffixed-line-length-132 -fcray-pointer -Os -fd-lines-as-comments -mavx -funroll-loops -fexpensive-optimizations -fno-range-check -fbackslash"
+fflags="-g -Wpadded -Wpacked -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant -Wunused -Wunderflow -Warray-temporaries -ffixed-line-length-132 -fcray-pointer -Os -fd-lines-as-comments -mavx -funroll-loops -fexpensive-optimizations -fno-range-check -fbackslash -fimplicit-none"
 cflags="-g -std=gnu99 -Wall"
 # lflags
 structure_description="data_struct/description.yaml"
