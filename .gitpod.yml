@@ -2,9 +2,7 @@
 tasks:
   - name: Package installation
     init: |
-      sudo apt-get install -yq gfortran curl zsh
-      sudo chsh -s /usr/bin/zsh
-      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      sudo apt-get install -yq gfortran curl
       curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3 -
       export PATH=/workspace/.pyenv_mirror/user/current/bin:$PATH
       pip install pre-commit
