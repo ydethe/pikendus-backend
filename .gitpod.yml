@@ -8,6 +8,6 @@ tasks:
       ([[ -d .venv ]] || (pdm venv create &&
       pdm use .venv/bin/python &&
       source .venv/bin/activate &&
-      cp .pdm.lock pdm.lock &&
-      pdm install))
+      cp .pdm.lock pdm.lock)) &&
+      pdm install
       
