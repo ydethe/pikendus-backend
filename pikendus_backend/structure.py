@@ -156,7 +156,7 @@ class DataStructure(object):
         return ds
 
 
-def generateTypeHeaders(root: Path, out_file: Path) -> List[Path]:
+def generateTypeHeaders(root: Path, out_file: Path, markdown: bool = False) -> List[Path]:
     created_files = []
 
     out_dir = out_file.parent
@@ -179,7 +179,11 @@ def generateTypeHeaders(root: Path, out_file: Path) -> List[Path]:
     # Generation header C
     fn = out_file.stem
     macro_name = "_%s_H_" % fn.upper()
-    res = [f"// {out_file}.h", "", "#include <stdint.h>", "", ""]
+    if markdown:
+        res = ["```c"]
+    else:
+        res = []
+    res.extend([f"// {out_file}.h", "", "#include <stdint.h>", "", ""])
     res.append("#ifndef %s" % macro_name)
     res.append("#define %s" % macro_name)
     res.append("")
@@ -189,32 +193,61 @@ def generateTypeHeaders(root: Path, out_file: Path) -> List[Path]:
     res.append("#endif")
     res.append("")
 
-    with open(f"{out_file}.h", "w") as f:
+    if markdown:
+        res.append("```")
+
+    h_file = f"{out_file}.h"
+    if markdown:
+        h_file += ".md"
+
+    with open(h_file, "w") as f:
         f.write("\n".join(res))
-        created_files.append(Path(f"{out_file}.h"))
+        created_files.append(Path(h_file))
 
     # Generation header Fortran
-    res = [f"! {out_file}.finc"]
+    if markdown:
+        res = ["```fortran"]
+    else:
+        res = []
+    res.append(f"! {out_file}.finc")
     res.append("")
     for ds in list_ds:
         res.append(G.nodes[ds]["ds"].toFHeader())
         res.append("")
 
-    with open(f"{out_file}.finc", "w") as f:
+    if markdown:
+        res.append("```")
+
+    finc_file = f"{out_file}.finc"
+    if markdown:
+        finc_file += ".md"
+
+    with open(finc_file, "w") as f:
         f.write("\n".join(res))
-        created_files.append(Path(f"{out_file}.finc"))
+        created_files.append(Path(finc_file))
 
     # Generation header Python
-    res = [f"# {out_file}.py"]
+    if markdown:
+        res = ["```python"]
+    else:
+        res = []
+    res.append(f"# {out_file}.py")
     res.append("")
     res.extend(["import ctypes", "", ""])
     for ds in list_ds:
         res.append(G.nodes[ds]["ds"].toPyHeader())
         res.append("")
 
-    with open(f"{out_file}.py", "w") as f:
+    if markdown:
+        res.append("```")
+
+    py_file = f"{out_file}.py"
+    if markdown:
+        py_file += ".md"
+
+    with open(py_file, "w") as f:
         f.write("\n".join(res))
-        created_files.append(Path(f"{out_file}.py"))
+        created_files.append(Path(py_file))
 
     return created_files
 
@@ -401,14 +434,25 @@ def _resource_path(resource: str) -> str:
 
 
 def generateFunctionHeaders(
-    build_dir: Path, root: Path, type_files: List[Path], pkg_name: str, out_file: Path
+    build_dir: Path,
+    root: Path,
+    type_files: List[Path],
+    pkg_name: str,
+    out_file: Path,
+    markdown: bool = False,
 ) -> Path:
     with open(root, "r") as f:
         data = yaml.load(f, Loader=yaml.SafeLoader)
 
     code = descToPython(build_dir, data["functions"], pkg_name, type_files)
+    if markdown:
+        out_file = out_file.parent / (out_file.name + ".md")
     with open(out_file, "w") as f:
+        if markdown:
+            f.write("```python\n")
         f.write(code)
+        if markdown:
+            f.write("\n```")
 
     return out_file.absolute()
 

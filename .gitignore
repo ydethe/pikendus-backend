@@ -2,6 +2,8 @@ htmldoc
 test_results.xml
 .pdm-python
 pdm.lock
+docs/example.*.md
+docs/wrappers.py.md
 
 *.db
 __pypackages__

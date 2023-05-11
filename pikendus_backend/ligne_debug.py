@@ -58,7 +58,7 @@ class LigneDebugApp(object):
 
 def ligne_debug(src: Path, dst: Path, debug: bool = False):
     """Transformation des [DEBUG]Message en
-    [DEBUG]<nl>@<nf> : Message, où <nl> est le numéro de ligne et <nf> le nom du fichier.
+    [DEBUG]<nl>@<nf>Message, où <nl> est le numéro de ligne et <nf> le nom du fichier.
     Créé une copie dans le nême dossier que l'original (extension .old)
 
     """

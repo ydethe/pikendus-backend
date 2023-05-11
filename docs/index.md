@@ -33,17 +33,30 @@ The structure_description option is described below.
 
 pikendus offers a way of describing shared structures. [See an example](https://gitlab.com/ydethe/pikendus-backend/-/blob/master/tests/ma_librairie/data_struct/description.yaml)
 
+[Example of a shared C structure](example.h.md)
+
+[Example of a shared fortran structure](example.finc.md)
+
+[Example of a shared python structure](example.py.md)
+
+[Example of a python wrapper](wrappers.py.md)
+
 ## Fortran coding standard
 
-* Derived types have to be passed by pointer
+* Shared [derived types](https://gcc.gnu.org/onlinedocs/gfortran/Derived-Types-and-struct.html) have to be passed by pointer
 
 * Only [cray pointers](https://gcc.gnu.org/onlinedocs/gfortran/Cray-pointers.html) are supported
 
-* Include pikendus_types.finc to get the generated derived types working
+* Include `pikendus_types.finc` to get the generated derived types working
 
 ```fortran
 include 'pikendus_types.finc'
 ```
 
+* If the pattern `"[DEBUG]"` is found in a fortran source, it is replaced on the fly by `"[DEBUG]<nl>@<nf>"`, where nl is the line number and nf the name of the file.
+
 ## C coding standard
 
+* Include `pikendus_types.h` to get the generated derived types working
+
+* Shared structures have to be passed by pointer
