@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from typing import List
 import yaml
@@ -143,21 +142,14 @@ class DataStructure(object):
         return "\n".join(res)
 
     @classmethod
-    def fromFile(cls, file: str) -> str:
-        with open(file, "r") as f:
-            lines = f.readlines()
-
-        fn = os.path.basename(file)
-        ds_name, _ = os.path.splitext(fn)
+    def fromDict(cls, ds_name: str, data: dict) -> "DataStructure":
         ds = cls(ds_name)
-        for line in lines:
-            if line.startswith("#"):
-                continue
-            elems = line.strip().split(",")
-            if len(elems) != 5:
-                break
-
-            name, typ, niter, unit, description = [x.strip() for x in elems]
+        for field in data["fields"]:
+            name = field.get("name")
+            typ = field.get("type")
+            niter = field.get("niter", 1)
+            unit = field.get("unit", "")
+            description = field.get("description", "")
 
             ds.addField(name, typ, int(niter), unit, description)
 
@@ -171,16 +163,16 @@ def generateTypeHeaders(root: Path, out_file: Path) -> List[Path]:
     out_dir.mkdir(exist_ok=True, parents=True)
 
     G = nx.DiGraph()
-    for dirpath, dirnames, filenames in os.walk(root):
-        for f in filenames:
-            _, ext = os.path.splitext(f)
-            if ext != ".ds":
-                continue
+    with open(root, "r") as f:
+        data = yaml.load(f, Loader=yaml.SafeLoader)
 
-            ds = DataStructure.fromFile(os.path.join(dirpath, f))
-            G.add_node(ds.name, ds=ds)
-            for dep in ds.deps:
-                G.add_edge(dep.typ, ds.name)
+    for ds_name in data["types"].keys():
+        type_desc = data["types"][ds_name]
+        ds = DataStructure.fromDict(ds_name, type_desc)
+
+        G.add_node(ds.name, ds=ds)
+        for dep in ds.deps:
+            G.add_edge(dep.typ, ds.name)
 
     list_ds = list(topological_sort(G))
 
@@ -225,12 +217,6 @@ def generateTypeHeaders(root: Path, out_file: Path) -> List[Path]:
         created_files.append(Path(f"{out_file}.py"))
 
     return created_files
-
-
-def loadFunctionDescription(fic: str) -> dict:
-    with open(fic, "r") as f:
-        dat = yaml.load(f, Loader=yaml.SafeLoader)
-    return dat
 
 
 def descToPython(build_dir: Path, dat: dict, pkg_name: str, type_files: List[Path]) -> str:
@@ -417,25 +403,20 @@ def _resource_path(resource: str) -> str:
 def generateFunctionHeaders(
     build_dir: Path, root: Path, type_files: List[Path], pkg_name: str, out_file: Path
 ) -> Path:
-    for dirpath, dirnames, filenames in os.walk(root):
-        for f in filenames:
-            _, ext = os.path.splitext(f)
-            if ext != ".fd":
-                continue
+    with open(root, "r") as f:
+        data = yaml.load(f, Loader=yaml.SafeLoader)
 
-            fd_pth = os.path.join(dirpath, f)
-            fcts = loadFunctionDescription(fd_pth)
-            code = descToPython(build_dir, fcts, pkg_name, type_files)
-            with open(out_file, "w") as f:
-                f.write(code)
+    code = descToPython(build_dir, data["functions"], pkg_name, type_files)
+    with open(out_file, "w") as f:
+        f.write(code)
 
     return out_file.absolute()
 
 
 if __name__ == "__main__":
     type_files = generateTypeHeaders(
-        Path("tests/ma_librairie/data_struct"),
-        out_file=Path("tests/ma_librairie/build/ma_librairie/_pikendus_types"),
+        Path("tests/ma_librairie/data_struct/description.yaml"),
+        out_file=Path("tests/ma_librairie/build/ma_librairie/pikendus_types"),
     )
     type_files.append(
         Path("tests/ma_librairie/build/ma_librairie/_ma_librairie.cpython-310-x86_64-linux-gnu.so")
@@ -443,8 +424,8 @@ if __name__ == "__main__":
 
     generateFunctionHeaders(
         build_dir=Path("tests/ma_librairie/build"),
-        root=Path("tests/ma_librairie/data_struct"),
+        root=Path("tests/ma_librairie/data_struct/description.yaml"),
         type_files=type_files,
         pkg_name="ma_librairie",
-        out_file=Path("tests/ma_librairie/build/ma_librairie/_pikendus.py"),
+        out_file=Path("tests/ma_librairie/build/ma_librairie/pikendus.py"),
     )

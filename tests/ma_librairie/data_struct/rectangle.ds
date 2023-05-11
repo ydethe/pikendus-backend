@@ -1,3 +1,0 @@
-# name, type, niter, unit, description
-ll_corner,point,1,,Lower left corner
-ur_corner,point,1,,Upper right corner

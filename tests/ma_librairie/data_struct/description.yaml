@@ -1,0 +1,55 @@
+meta:
+  endian: le
+
+types:
+  point:
+    fields:
+      - name: x
+        type: u4
+        unit: m
+        description: X coordinate
+      - name: y
+        type: u4
+        unit: m
+        description: Y coordinate
+  rectangle:
+    fields:
+      - name: ll_corner
+        type: point
+        description: Lower left corner
+      - name: ur_corner
+        type: point
+        description: Upper right corner
+
+functions:
+  c_init_rectangle:
+    help: Initialize a rectangle
+    langage: C
+    arguments:
+      - name: r
+        type: rectangle
+        intent: in
+        help: Input rectangle
+      - name: width
+        type: u4
+        intent: in
+        help: Width of the rectangle
+        unit: m
+      - name: height
+        type: u4
+        intent: in
+        help: Height of the rectangle
+        unit: m
+  for_area:
+    help: Compute the area of a rectangle
+    langage: F
+    arguments:
+      - name: r
+        type: rectangle
+        intent: in
+        help: Input rectangle
+      - name: area
+        type: u4
+        intent: out
+        help: Area of the rectangle
+        unit: m2

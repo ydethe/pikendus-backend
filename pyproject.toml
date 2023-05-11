@@ -48,9 +48,9 @@ line-length = 100
 [tool.pytest.ini_options]
 addopts = [
     "--import-mode=importlib",
-    "--html=build/htmldoc/tests/report.html",
+    "--html=htmldoc/tests/report.html",
     "--self-contained-html",
-    "--junitxml=build/junit.xml",
+    "--junitxml=htmldoc/junit.xml",
     "--cov-config=tests/coverage.conf",
     "--cov=pikendus_backend",
     "--doctest-modules",
@@ -97,7 +97,7 @@ quality = [
     "ruff>=0.0.246",
 ]
 doc = [
-    "pdoc3~=0.10.0",
+    "mkdocs-material>=9.1.11",
 ]
 test = [
     "pytest~=7.1.3",
@@ -112,9 +112,10 @@ test = [
 [tool.pdm.scripts]
 site_packages = true
 doc.shell = """\
-    mkdir -p build/htmldoc/pikendus_backend
-    pdoc --html --force --config latex_math=True -o build/htmldoc pikendus_backend
-    coverage html -d build/htmldoc/coverage --rcfile tests/coverage.conf
-    docstr-coverage pikendus_backend -miP -sp -is -idel --skip-file-doc --exclude ".*/kt.*.py" --badge=build/htmldoc/doc_badge.svg
-    coverage-badge -f -o build/htmldoc/cov_badge.svg
+    mkdir -p htmldoc/pikendus_backend
+    cp CHANGELOG.md docs
+    mkdocs build --site-dir htmldoc
+    coverage html -d htmldoc/coverage --rcfile tests/coverage.conf
+    docstr-coverage pikendus_backend -miP -sp -is -idel --skip-file-doc --exclude ".*/kt.*.py" --badge=htmldoc/doc_badge.svg
+    coverage-badge -f -o htmldoc/cov_badge.svg
 """

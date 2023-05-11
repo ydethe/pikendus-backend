@@ -28,7 +28,7 @@ Source = "https://gitlab.com/ydethe/ma-librairie"
 fflags="-g -Wpadded -Wpacked -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant -Wunused -Wunderflow -Warray-temporaries -ffixed-line-length-132 -fcray-pointer -Os -fd-lines-as-comments -mavx -funroll-loops -fexpensive-optimizations -fno-range-check -fbackslash"
 cflags="-g -std=gnu99 -Wall"
 # lflags
-struct_dir="data_struct"
+structure_description="data_struct/description.yaml"
 
 [tool.pylint.main]
 ignore-patterns = ["kt_*.py"]

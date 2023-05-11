@@ -1,0 +1,7 @@
+site_name: pikendus backend
+repo_url: https://gitlab.com/ydethe/pikendus-backend
+theme:
+  name: material
+nav:
+  - Home: "index.md"
+  - Changelog: "CHANGELOG.md"

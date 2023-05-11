@@ -11,6 +11,13 @@ from .scripts.gene_py_src import generate_wrappers
 
 
 class PikendusWheelBuilder(WheelBuilder):
+    """Wheel builder
+
+    Args:
+        context: the build context
+
+    """
+
     def get_files(self, context: Context) -> Iterable[Tuple[str, Path]]:
         package_dir = self.config.build_config.package_dir
 
@@ -33,9 +40,12 @@ class PikendusWheelBuilder(WheelBuilder):
 
         tool_config = context.config.data.get("tool", dict())
         pikendus_config = tool_config.get("pikendus", dict())
-        struct_dir = pikendus_config.get("struct_dir", "data_struct")
+        structure_description = pikendus_config.get(
+            "structure_description", "data_struct/description.yaml"
+        )
         type_files = generateTypeHeaders(
-            root=Path(struct_dir), out_file=context.build_dir / module_name / "pikendus_types"
+            root=Path(structure_description),
+            out_file=context.build_dir / module_name / "pikendus_types",
         )
         for file in type_files:
             yield file.relative_to(context.build_dir).as_posix(), file
@@ -47,7 +57,7 @@ class PikendusWheelBuilder(WheelBuilder):
 
         file_pth = generateFunctionHeaders(
             build_dir=context.build_dir,
-            root=Path(struct_dir),
+            root=Path(structure_description),
             type_files=type_files + [dll_path],
             pkg_name=module_name,
             out_file=context.build_dir / module_name / "pikendus.py",

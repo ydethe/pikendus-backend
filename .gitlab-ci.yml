@@ -20,7 +20,7 @@ test:
   artifacts:
     when: always
     paths:
-      - build/htmldoc
+      - htmldoc
 
 # https://ydethe.gitlab.io/pikendus-backend/htmldoc/pikendus-backend/
 pages:
@@ -28,7 +28,9 @@ pages:
   dependencies:
   - test
   script:
-    - cp -r build/htmldoc public
+    - cp -r htmldoc public
   artifacts:
     paths:
       - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
