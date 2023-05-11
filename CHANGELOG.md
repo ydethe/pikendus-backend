@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [v0.2.2](https://gitlab.com/ydethe/pikendus-backend/tags/v0.2.2) - 2023-05-11
+
+<small>[Compare with v0.2.1](https://gitlab.com/ydethe/pikendus-backend/compare/v0.2.1...v0.2.2)</small>
+
+### Fixed
+
+- Fixed test ([0c49828](https://gitlab.com/ydethe/pikendus-backend/commit/0c49828cf5313a5a5200923877866fccf676c719) by Yann BLAUDIN DE THE).
+
 ## [v0.2.1](https://gitlab.com/ydethe/pikendus-backend/tags/v0.2.1) - 2023-05-11
 
 <small>[Compare with v0.1.1](https://gitlab.com/ydethe/pikendus-backend/compare/v0.1.1...v0.2.1)</small>

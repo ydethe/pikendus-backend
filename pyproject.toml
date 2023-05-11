@@ -17,6 +17,7 @@ dependencies = [
     "numpy>=1.24.3",
     "toml>=0.10.2",
     "networkx>=3.1",
+    "PyYAML>=6.0",
 ]
 requires-python = ">3.8"
 
@@ -24,6 +25,7 @@ requires-python = ">3.8"
 "Bug Tracker" = "https://gitlab.com/ydethe/pikendus-backend/issues"
 Homepage = "https://gitlab.com/ydethe/pikendus-backend"
 Source = "https://gitlab.com/ydethe/pikendus-backend"
+Documentation = "https://ydethe.gitlab.io/-/pikendus-backend/-/jobs/4267041254/artifacts/htmldoc/index.html"
 
 [tool.pylint.main]
 ignore-patterns = ["kt_*.py"]
