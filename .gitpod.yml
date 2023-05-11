@@ -2,12 +2,12 @@
 tasks:
   - name: Package installation
     before: >
-      sudo apt install -yq gfortran curl &&
+      sudo apt-get install -yq gfortran curl &&
       curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3 - &&
       export PATH=/workspace/.pyenv_mirror/user/current/bin:$PATH &&
-      ([[ -d .venv ]] || (pdm venv create &&
+      ( [ -d .venv ] || ( pdm venv create &&
       pdm use .venv/bin/python &&
       source .venv/bin/activate &&
-      cp .pdm.lock pdm.lock)) &&
+      cp .pdm.lock pdm.lock ) ) &&
       pdm install
       
