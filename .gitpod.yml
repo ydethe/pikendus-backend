@@ -2,7 +2,7 @@
 tasks:
   - name: Package installation
     init: >
-      sudo apt install gfortran curl
-      curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3 -
+      sudo apt install gfortran curl &&
+      curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3 - &&
       export PATH=/workspace/.pyenv_mirror/user/current/bin:$PATH
       
