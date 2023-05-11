@@ -6,8 +6,16 @@ from pdm.backend.hooks import Context
 from pdm.backend.wheel import WheelBuilder
 
 from .structure import generateTypeHeaders, generateFunctionHeaders
-from .scripts.compile import compile
-from .scripts.gene_py_src import generate_wrappers
+from .compile import compile
+from .gene_py_src import generate_wrappers
+
+
+WHEEL_FILE_FORMAT = """\
+Wheel-Version: 1.0
+Generator: pikendus-backend ({version})
+Root-Is-Purelib: {is_purelib}
+Tag: {tag}
+"""
 
 
 class PikendusWheelBuilder(WheelBuilder):
@@ -67,13 +75,6 @@ class PikendusWheelBuilder(WheelBuilder):
         yield from self._get_metadata_files(context)
 
     def _write_wheel_file(self, fp: IO[str], is_purelib: bool) -> None:
-        WHEEL_FILE_FORMAT = """\
-Wheel-Version: 1.0
-Generator: pikendus-backend ({version})
-Root-Is-Purelib: {is_purelib}
-Tag: {tag}
-"""
-
         try:
             version = get_version("pikendus-backend")
         except ModuleNotFoundError:

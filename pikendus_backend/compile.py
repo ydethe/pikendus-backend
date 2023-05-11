@@ -12,7 +12,7 @@ from .ligne_debug import ligne_debug
 
 
 def compile(pdm_build_dir: Path, src_dir: Path) -> Path:
-    from .. import logger
+    from . import logger
 
     build_dir = Path(".pikendus").absolute()
     if build_dir.exists() and not build_dir.is_dir():
