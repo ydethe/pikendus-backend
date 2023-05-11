@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [v0.2.6](https://gitlab.com/ydethe/pikendus-backend/tags/v0.2.6) - 2023-05-11
+
+<small>[Compare with v0.2.5](https://gitlab.com/ydethe/pikendus-backend/compare/v0.2.5...v0.2.6)</small>
+
+## [v0.2.5](https://gitlab.com/ydethe/pikendus-backend/tags/v0.2.5) - 2023-05-11
+
+<small>[Compare with v0.2.4](https://gitlab.com/ydethe/pikendus-backend/compare/v0.2.4...v0.2.5)</small>
+
+### Added
+
+- Added pdm command serve ([0d61de6](https://gitlab.com/ydethe/pikendus-backend/commit/0d61de60d25866629e6660a1af2f19efcc19aa38) by Yann de The).
+- Added gitpod conf ([f147244](https://gitlab.com/ydethe/pikendus-backend/commit/f147244e16212712b8ef59d68bc01c5bcf583cb2) by Yann de The).
+
+### Fixed
+
+- Fixed gitpod ([fc27778](https://gitlab.com/ydethe/pikendus-backend/commit/fc27778f47268579f4e45071ca2b7bea4e93ac83) by Yann de The).
+
 ## [v0.2.4](https://gitlab.com/ydethe/pikendus-backend/tags/v0.2.4) - 2023-05-11
 
 <small>[Compare with v0.2.3](https://gitlab.com/ydethe/pikendus-backend/compare/v0.2.3...v0.2.4)</small>
