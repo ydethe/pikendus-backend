@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <small>[Compare with v0.2.5](https://gitlab.com/ydethe/pikendus-backend/compare/v0.2.5...v0.2.6)</small>
 
+### Fixed
+
+- Fixed cov and doc badges ([eb1e6e0](https://gitlab.com/ydethe/pikendus-backend/commit/eb1e6e03a7e9d5df4a98841d92581f17576789a1) by Yann de The).
+
 ## [v0.2.5](https://gitlab.com/ydethe/pikendus-backend/tags/v0.2.5) - 2023-05-11
 
 <small>[Compare with v0.2.4](https://gitlab.com/ydethe/pikendus-backend/compare/v0.2.4...v0.2.5)</small>
