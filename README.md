@@ -1,8 +1,8 @@
 [![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://dev.to/frostming/a-review-pipenv-vs-poetry-vs-pdm-39b4)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![Python](https://img.shields.io/badge/python-3.8-green)
-[![Doc](htmldoc/doc_badge.svg)](https://ydethe.gitlab.io/pikendus-backend/)
-![Coverage](htmldoc/cov_badge.svg)
+[![Doc](https://ydethe.gitlab.io/pikendus-backend/doc_badge.svg)](https://ydethe.gitlab.io/pikendus-backend/)
+![Coverage](https://ydethe.gitlab.io/pikendus-backend/cov_badge.svg)
 
 # Quick look
 
