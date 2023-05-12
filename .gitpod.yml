@@ -1,12 +1,20 @@
 # List the start up tasks. Learn more: https://www.gitpod.io/docs/configure/workspaces/tasks
 tasks:
   - name: Package installation
-    init: |
-      sudo apt-get install -yq gfortran curl
+    before: |
+      sudo apt update
+      sudo apt-get install -yq gfortran curl default-jre
       curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3 -
       export PATH=/workspace/.pyenv_mirror/user/current/bin:$PATH
       pip install pre-commit
       pre-commit install
       ( [ -d .venv ] || ( pdm venv create && pdm use .venv/bin/python && cp .pdm.lock pdm.lock ) )
       pdm install
-      
+
+vscode:
+  extensions:
+    - ms-python.python-2023.8.0-universal
+    - eamodio.gitlens-13.6.0-universal
+    - fiuba.photran-lsp-client-vscode-0.1.0-universal
+    - charliermarsh.ruff-2023.14.0-linux-x64
+    - matangover.mypy-0.2.0-universal

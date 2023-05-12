@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List
-import yaml
 
+import yaml
 import networkx as nx
 from networkx.algorithms.dag import topological_sort
 
@@ -60,7 +60,18 @@ _f_types_map = {
 
 
 class Field(object):
-    def __init__(self, name: str, typ: str, niter: int, unit: str, description: str):
+    """Describe one field of a data structure
+
+    Args:
+        name: Name of the field
+        typ: Type of the field
+        niter: Number of element if the field is an array
+        unit: Unit of the field
+        description: Description of the field
+
+    """
+
+    def __init__(self, name: str, typ: str, niter: int = 1, unit: str = "", description: str = ""):
         self.name = name
         self.typ = typ
         self.niter = niter
@@ -105,6 +116,13 @@ class Field(object):
 
 
 class DataStructure(object):
+    """Description of a whole data structure
+
+    Args:
+        name: Name of the structure
+
+    """
+
     def __init__(self, name: str):
         self.name = name
         self.fields = []
