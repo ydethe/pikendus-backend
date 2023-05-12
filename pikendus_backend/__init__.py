@@ -1,21 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-
-# Testing
-
-## Run the tests
-
-To run tests, just run:
-
-    pdm run pytest
-
-## Test reports
-
-[See test report](../tests/report.html)
-
-[See coverage](../coverage/index.html)
-
-"""
 import os
 import logging
 

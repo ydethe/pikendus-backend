@@ -12,6 +12,16 @@ from .ligne_debug import ligne_debug
 
 
 def compile(pdm_build_dir: Path, src_dir: Path) -> Path:
+    """Generate the shared library
+
+    Args:
+        pdm_build_dir: build dir used by the pdm backend
+        src_dir: library's source directory
+
+    Returns:
+        Path to the created shared library
+
+    """
     from . import logger
 
     build_dir = Path(".pikendus").absolute()

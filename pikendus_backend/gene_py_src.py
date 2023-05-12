@@ -2,15 +2,6 @@
 
 from pathlib import Path
 import subprocess
-from typing import List
-
-
-def liste_fic(root: Path, pattern: str = "**/*", ext: List[str] = ["*"]) -> List[Path]:
-    list_fic = []
-    found = root.rglob(f"{pattern}.*")
-    list_fic.extend((f for f in found if f.is_file() and f.suffix in ext or "*" in ext))
-
-    return list_fic
 
 
 def generate_wrappers(
@@ -18,7 +9,14 @@ def generate_wrappers(
     src_dir: Path,
     pdm_build_dir: Path,
 ):
-    "Génération des wrappers python"
+    """Génération des wrappers python
+
+    Args:
+        config: Configuration data
+        src_dir: library's source directory
+        pdm_build_dir: build dir used by the pdm backend
+
+    """
     src_dir = src_dir.expanduser().resolve()
     pdm_build_dir = pdm_build_dir.expanduser().resolve()
 
@@ -33,7 +31,7 @@ def generate_wrappers(
 
     dst_dir = pdm_build_dir / module_name
 
-    l_src_found = liste_fic(root=src_dir, ext=[".f"])
+    l_src_found = list(src_dir.rglob("*.f"))
     l_src = list()
     for pth in l_src_found:
         s = str(pth)

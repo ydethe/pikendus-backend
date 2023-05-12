@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
-## [v0.2.6](https://gitlab.com/ydethe/pikendus-backend/tags/v0.2.6) - 2023-05-11
+## [v0.2.6](https://gitlab.com/ydethe/pikendus-backend/tags/v0.2.6) - 2023-05-12
 
 <small>[Compare with v0.2.5](https://gitlab.com/ydethe/pikendus-backend/compare/v0.2.5...v0.2.6)</small>
 

@@ -1,5 +1,6 @@
 # Introduction
 
+pikendus is an estonian word that means 'extension'
 pikendus backend is a build backend compliant to [PEP517](https://peps.python.org/pep-0517/). It allows buliding wheel and sdist files, and to compile C and fortran sources into a shared library packed with the wheel file.
 
 # Usage

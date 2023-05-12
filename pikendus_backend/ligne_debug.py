@@ -6,17 +6,25 @@ from pathlib import Path
 
 
 class LigneDebugApp(object):
-    def __init__(self, src, dst):
+    """Class to handle [DEBUG], [INFO], [WARNING] and [ERROR] messages in fortran sources
+
+    Args:
+        src: Path to a fortran source to analyse
+        dst: Path to the file where the modified source should be written
+
+    """
+
+    def __init__(self, src: Path, dst: Path):
         self.src = src
         self.dst = dst
 
-    def traite(self, deb):
-        f = codecs.open(self.src, "r", "latin-1")
-        g = codecs.open(self.dst, "w", "latin-1")
+    def process(self, debug):
+        f = codecs.open(self.src, "r", "utf-8")
+        g = codecs.open(self.dst, "w", "utf-8")
 
         nf = basename(self.src)
 
-        balises = ["[DEBUG", "[ERREUR", "[ATTENTION", "[INFO"]
+        balises = ["[DEBUG", "[ERROR", "[WARNING", "[INFO"]
 
         self.num_line = 1
         self.line = f.readline()
@@ -44,7 +52,7 @@ class LigneDebugApp(object):
 
             # Suppression de "d" en début de ligne
             if len(new_line) > 0 and new_line[0] == "d":
-                if deb:
+                if debug:
                     new_line = " " + new_line[1:]
                 else:
                     new_line = ""
@@ -64,4 +72,4 @@ def ligne_debug(src: Path, dst: Path, debug: bool = False):
     """
     app = LigneDebugApp(src, dst)
 
-    app.traite(debug)
+    app.process(debug)
