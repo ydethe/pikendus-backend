@@ -1,0 +1,9 @@
+python module _ma_librairie
+    interface
+        integer*4 function for_product(a, b, c)
+            integer*4, intent(in) :: a, b
+            integer*4, intent(out) :: c
+      end function
+    end interface
+
+end python module _ma_librairie

@@ -48,9 +48,14 @@ class PikendusWheelBuilder(WheelBuilder):
 
         tool_config = context.config.data.get("tool", dict())
         pikendus_config = tool_config.get("pikendus", dict())
-        structure_description = pikendus_config.get(
-            "structure_description", "data_struct/description.yaml"
-        )
+        structure_description = pikendus_config.get("structure_description", None)
+        if structure_description is None:
+            raise ValueError(
+                "Keyword 'structure_description' not found "
+                "in pyproject.toml's [tool.pikendus] section"
+            )
+
+        # if structure_description
         type_files = generateTypeHeaders(
             root=Path(structure_description),
             out_file=context.build_dir / module_name / "pikendus_types",

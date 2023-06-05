@@ -16,6 +16,16 @@ def test_create_wheel():
         build_wheel(wheel_directory=str(wheel_directory))
 
 
+def test_create_wheel2():
+    rel_build_dir = Path("build")
+    with cd("tests/ma_librairie_no_struct"):
+        if rel_build_dir.exists():
+            shutil.rmtree(rel_build_dir)
+
+        wheel_directory = Path("dist").absolute()
+        build_wheel(wheel_directory=str(wheel_directory))
+
+
 def test_create_sdist():
     rel_build_dir = Path("build")
     with cd("tests/ma_librairie"):
@@ -37,4 +47,5 @@ def ntest_generated_lib():
 
 
 if __name__ == "__main__":
-    test_create_wheel()
+    # test_create_wheel()
+    test_create_wheel2()

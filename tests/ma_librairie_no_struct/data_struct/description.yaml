@@ -1,0 +1,36 @@
+meta:
+  endian: le
+
+functions:
+  c_sum:
+    help: Compute the sum of 2 integers
+    langage: C
+    arguments:
+      - name: a
+        type: u4
+        intent: in
+        help: First scalar
+      - name: b
+        type: u4
+        intent: in
+        help: Second scalar
+      - name: c
+        type: u4
+        intent: out
+        help: The computed sum
+  for_product:
+    help: Compute the product of 2 integers
+    langage: F
+    arguments:
+      - name: a
+        type: u4
+        intent: in
+        help: First scalar
+      - name: b
+        type: u4
+        intent: in
+        help: Second scalar
+      - name: c
+        type: u4
+        intent: out
+        help: The computed product
