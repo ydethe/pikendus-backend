@@ -47,5 +47,5 @@ def ntest_generated_lib():
 
 
 if __name__ == "__main__":
-    # test_create_wheel()
-    test_create_wheel2()
+    test_create_wheel()
+    # test_create_wheel2()

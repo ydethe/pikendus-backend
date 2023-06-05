@@ -6,9 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
-## [v0.2.6](https://gitlab.com/ydethe/pikendus-backend/tags/v0.2.6) - 2023-06-05
+## [v0.3.0](https://gitlab.com/ydethe/pikendus-backend/tags/v0.3.0) - 2023-06-05
 
-<small>[Compare with v0.2.5](https://gitlab.com/ydethe/pikendus-backend/compare/v0.2.5...v0.2.6)</small>
+<small>[Compare with v0.2.5](https://gitlab.com/ydethe/pikendus-backend/compare/v0.2.5...v0.3.0)</small>
+
+### Added
+
+- Added the possibility to have only functions and no data structure ([ffbde5d](https://gitlab.com/ydethe/pikendus-backend/commit/ffbde5dcccef4a2421fbc5d2adea61a6365ee433) by Yann BLAUDIN DE THE).
 
 ### Fixed
 

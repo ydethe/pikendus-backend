@@ -184,7 +184,7 @@ def generateTypeHeaders(root: Path, out_file: Path, markdown: bool = False) -> L
     with open(root, "r") as f:
         data = yaml.load(f, Loader=yaml.SafeLoader)
 
-    if not hasattr(data, "types"):
+    if "types" not in data.keys():
         return []
 
     for ds_name in data["types"].keys():
