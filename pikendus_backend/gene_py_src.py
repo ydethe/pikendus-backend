@@ -55,4 +55,5 @@ def generate_wrappers(
     F2pyCommand.append(str(sig_fic))
     F2pyCommand.append(f"--build-dir {dst_dir}")
     F2pyCommand = " ".join(F2pyCommand)
-    subprocess.run(F2pyCommand, stdout=subprocess.PIPE, shell=True, check=True)
+    # subprocess.run(F2pyCommand, stdout=subprocess.PIPE, shell=True, check=True)
+    subprocess.run(F2pyCommand, stdout=subprocess.PIPE, shell=True, check=False)

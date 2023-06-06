@@ -352,6 +352,8 @@ def _resource_path(resource: str) -> str:
         elif len(l_out) == 1:
             line_def = line_def[:-2] + ") -> %s:" % l_out[0]
         else:
+            if "from typing import Tuple" not in code:
+                code.insert(0, "from typing import Tuple")
             line_def = line_def[:-2] + ") -> Tuple[%s]:" % (", ".join(l_out))
         code.append(line_def)
 
